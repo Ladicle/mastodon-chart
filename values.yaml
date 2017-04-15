@@ -1,0 +1,33 @@
+web:
+  name: web
+
+streaming:
+  name: streaming
+
+sidekiq:
+  name: sidekiq
+
+redis:
+  name: redis
+
+postgres:
+  name: postgres
+  image: postgres
+  imageTag: 9.6.2
+  imagePullPolicy: IfNotPresent
+  persistentVolume:
+    accessMode: ReadWriteMany
+    size: 8Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+  metrics:
+    enabled: true
+    image: wrouesnel/postgres_exporter
+    imageTag: v0.1.1
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m

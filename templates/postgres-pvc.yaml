@@ -1,0 +1,16 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "postgres.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    component: "{{ .Values.postgres.name }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.postgres.persistentVolume.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.postgres.persistentVolume.size | quote }}
