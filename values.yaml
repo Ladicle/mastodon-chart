@@ -12,6 +12,7 @@ redis:
   image: bitnami/redis
   imageTag: 3.2.8-r2
   imagePullPolicy: IfNotPresent
+  # You need to create PV beforehead.
   persistentVolume:
     accessMode: ReadWriteMany
     size: 8Gi
@@ -30,6 +31,7 @@ postgres:
     pguser: "postgres"
     postgres_db: ""
     pgdata: /var/lib/postgresql/data/pgdata
+  # You need to create PV beforehead.
   persistentVolume:
     accessMode: ReadWriteMany
     size: 8Gi
