@@ -25,6 +25,11 @@ postgres:
   image: postgres
   imageTag: 9.6.2
   imagePullPolicy: IfNotPresent
+  env:
+    postgres_user: "postgres"
+    pguser: "postgres"
+    postgres_db: ""
+    pgdata: /var/lib/postgresql/data/pgdata
   persistentVolume:
     accessMode: ReadWriteMany
     size: 8Gi

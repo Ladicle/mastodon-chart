@@ -27,14 +27,10 @@ spec:
         image: "{{ .Values.postgres.image }}:{{ .Values.postgres.imageTag }}"
         imagePullPolicy: {{ .Values.postgres.imagePullPolicy | quote }}
         env:
-        - name: POSTGRES_USER
-          value: "postgres"
-        - name: PGUSER
-          value: "postgres"
-        - name: POSTGRES_DB
-          value: ""
-        - name: PGDATA
-          value: /var/lib/postgresql/data/pgdata
+        {{- range $key, $val := .Values.postgres.env }}
+        - name: {{ $key | upper }}
+          value: {{ $val }}
+        {{- end}}
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
