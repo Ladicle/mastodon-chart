@@ -9,6 +9,16 @@ sidekiq:
 
 redis:
   name: redis
+  image: bitnami/redis
+  imageTag: 3.2.8-r2
+  imagePullPolicy: IfNotPresent
+  persistentVolume:
+    accessMode: ReadWriteMany
+    size: 8Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
 
 postgres:
   name: postgres

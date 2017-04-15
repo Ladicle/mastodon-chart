@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "redis.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.redis.name }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        component: "{{ .Values.redis.name }}"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ template "name" . }}-{{ .Values.redis.name }}
+        image: "{{ .Values.redis.image }}:{{ .Values.redis.imageTag }}"
+        imagePullPolicy: {{ .Values.redis.imagePullPolicy | quote }}
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "redis.fullname" . }}
+              key: redis-password
+        ports:
+        - name: redis
+          containerPort: 6379
+        ports:
+        - name: redis
+          containerPort: 6379
+        livenessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - redis-cli
+            - ping
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+        resources:
+{{ toYaml .Values.redis.resources | indent 10 }}
+        volumeMounts:
+        - name: redis-data
+          mountPath: /bitnami/redisg
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ template "redis.fullname" . }}

@@ -1,0 +1,16 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "redis.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    component: "{{ .Values.redis.name }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.redis.persistentVolume.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.redis.persistentVolume.size | quote }}
