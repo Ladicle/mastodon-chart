@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "web.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.web.name }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        component: "{{ .Values.web.name }}"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ template "name" . }}-{{ .Values.web.name }}
+        image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
+        imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}
+        command:
+          - bundle
+          - exec
+          - rails
+          - s
+          - -p
+          - 3000
+          - -b
+          - '0.0.0.0'
+        env:
+{{ include "productonEnvironment" . | indent 8 }}
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "postgres.fullname" . }}
+              key: postgres-password
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "web.fullname" . }}
+              key: secret-key-base
+        - name: OTP_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: otp-secret
+        - name: PAPERCLIP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "web.fullname" . }}
+              key: paperclip-secret
+        - name: SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "web.fullname" . }}
+              key: smtpPassword
+        ports:
+        - name: web
+          containerPort: 3000
+        resources:
+{{ toYaml .Values.web.resources | indent 10 }}
+        volumeMounts:
+        - name: assets
+          mountPath: /mastodon/public/assets
+        - name: system
+          mountPath: /mastodon/public/system
+      volumes:
+      - name: system
+        persistentVolumeClaim:
+          claimName: {{ template "web.fullname" . }}-system
+      - name: assets
+        persistentVolumeClaim:
+          claimName: {{ template "web.fullname" . }}-assets

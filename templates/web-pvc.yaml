@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.web.name }}"
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "web.fullname" . }}-system
+spec:
+  accessModes:
+    - {{ .Values.web.persistentVolume.system.accessMode | quote }}
+  resources:
+    requests:
+      storage: "{{ .Values.web.persistentVolume.system.size }}"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.web.name }}"
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  name: {{ template "web.fullname" . }}-assets
+spec:
+  accessModes:
+    - {{ .Values.web.persistentVolume.assets.accessMode | quote }}
+  resources:
+    requests:
+      storage: "{{ .Values.web.persistentVolume.assets.size }}"

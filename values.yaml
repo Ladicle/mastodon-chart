@@ -1,5 +1,19 @@
 web:
   name: web
+  image: gargron/mastodon
+  imageTag: v1.1.2
+  imagePullPolicy: IfNotPresent
+  persistentVolume:
+    system:
+      accessMode: ReadWriteMany
+      size: 8Gi
+    assets:
+      accessMode: ReadWriteMany
+      size: 8Gi
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
 
 streaming:
   name: streaming
