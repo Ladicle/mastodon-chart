@@ -29,9 +29,6 @@ spec:
         ports:
         - name: redis
           containerPort: 6379
-        ports:
-        - name: redis
-          containerPort: 6379
         livenessProbe:
           exec:
             command:
@@ -46,7 +43,6 @@ spec:
             - ping
           initialDelaySeconds: 5
           timeoutSeconds: 1
-        resources:
         resources:
 {{ toYaml .Values.redis.resources | indent 10 }}
         volumeMounts:
