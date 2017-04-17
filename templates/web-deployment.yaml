@@ -31,30 +31,6 @@ spec:
           - '0.0.0.0'
         env:
 {{ include "productonEnvironment" . | indent 8 }}
-        - name: DB_PASS
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "postgres.fullname" . }}
-              key: postgres-password
-        - name: SECRET_KEY_BASE
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "web.fullname" . }}
-              key: secret-key-base
-        - name: OTP_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: otp-secret
-        - name: PAPERCLIP_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "web.fullname" . }}
-              key: paperclip-secret
-        - name: SMTP_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "web.fullname" . }}
-              key: smtpPassword
         ports:
         - name: web
           containerPort: 3000

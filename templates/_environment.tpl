@@ -3,15 +3,21 @@ Production environment for mastodon
 */}}
 {{- define "productonEnvironment" -}}
 - name: REDIS_HOST
-  value: "redis"
+  value: {{ template "redis.fullname" . | quote }}
 - name: REDIS_PORT
   value: "6379"
+
 # - name: REDIS_DB
 #   value: "0"
 - name: DB_HOST
-  value: "db"
+  value: {{ template "postgres.fullname" . | quote }}
 - name: DB_USER
   value: "postgres"
+- name: DB_PASS
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "postgres.fullname" . }}
+      key: postgres-password
 - name: DB_NAME
   value: "postgres"
 - name: DB_PORT
@@ -44,6 +50,11 @@ Production environment for mastodon
   value: "587"
 - name: SMTP_LOGIN
   value: "dummy"
+- name: SMTP_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "streaming.fullname" . }}
+      key: smtpPassword
 - name: SMTP_FROM_ADDRESS
   value: "notifications@example.com"
 # - name: SMTP_DELIVERY_METHOD
@@ -87,4 +98,19 @@ Production environment for mastodon
 # If you need to use pgBouncer, you need to disable prepared statements:
 # - name: PREPARED_STATEMENTS
 #   value: "false"
+
+- name: SECRET_KEY_BASE
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "streaming.fullname" . }}
+      key: secret-key-base
+- name: OTP_SECRET
+  valueFrom:
+    secretKeyRef:
+      key: otp-secret
+- name: PAPERCLIP_SECRET
+  valueFrom:
+    secretKeyRef:
+      name: {{ template "streaming.fullname" . }}
+      key: paperclip-secret
 {{- end -}}
