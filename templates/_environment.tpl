@@ -3,14 +3,14 @@ Production environment for mastodon
 */}}
 {{- define "productonEnvironment" -}}
 - name: REDIS_HOST
-  value: {{ template "redis.fullname" . | quote }}
+  value: "{{ template "redis.fullname" . }}"
 - name: REDIS_PORT
   value: "6379"
 
 # - name: REDIS_DB
 #   value: "0"
 - name: DB_HOST
-  value: {{ template "postgres.fullname" . | quote }}
+  value: "{{ template "postgres.fullname" . }}"
 - name: DB_USER
   value: "postgres"
 - name: DB_PASS

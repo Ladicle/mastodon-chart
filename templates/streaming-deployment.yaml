@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "streaming.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.streaming.name }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        component: "{{ .Values.streaming.name }}"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ template "name" . }}-{{ .Values.streaming.name }}
+        image: "{{ .Values.streaming.image }}:{{ .Values.streaming.imageTag }}"
+        imagePullPolicy: {{ .Values.streaming.imagePullPolicy | quote }}
+        command:
+          - npm
+          - run
+          - start
+        env:
+{{ include "productonEnvironment" . | indent 8 }}
+        ports:
+        - name: streaming
+          containerPort: 4000
+        resources:
+{{ toYaml .Values.streaming.resources | indent 10 }}
