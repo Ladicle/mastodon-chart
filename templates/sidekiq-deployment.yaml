@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "sidekiq.fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    component: "{{ .Values.sidekiq.name }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        component: "{{ .Values.sidekiq.name }}"
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ template "name" . }}-{{ .Values.sidekiq.name }}
+        image: "{{ .Values.sidekiq.image }}:{{ .Values.sidekiq.imageTag }}"
+        imagePullPolicy: {{ .Values.sidekiq.imagePullPolicy | quote }}
+        command:
+          - bundle
+          - exec
+          - sidekiq
+          - -q
+          - default
+          - -q
+          - mailers
+          - -q
+          - pull
+          - -q
+          - push
+        env:
+{{ include "productonEnvironment" . | indent 8 }}
+        resources:
+{{ toYaml .Values.sidekiq.resources | indent 10 }}
