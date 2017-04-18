@@ -13,20 +13,18 @@ metadata:
   name: {{ template "web.fullname" . }}
 spec:
   rules:
-  {{- define "web.serviceName" }}{{ .Release.Name }}-{{ template "web.fullname" }}{{- end -}}
-  {{- $sp := .Values.web.servicePort }}
-  {{- range $host := .Values.web.ingress.hosts }}
-  - host: {{ $host }}
+  - host: {{ .Values.web.ingress.host }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: {{ template "web.serviceName" }}
-          servicePort: {{ $sp }}
-  {{- end }}
+          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}-{{ .Values.web.name }}
+          servicePort: {{ .Values.web.servicePort }}
+      - path: /api/v1/streaming
+        backend:
+          serviceName: {{ .Release.Name }}-{{ .Chart.Name }}-{{ .Values.streaming.name }}
+          servicePort: {{ .Values.streaming.servicePort }}
   tls:
   - secretName: test-lego-secret
     hosts:
-    {{- range $host := .Values.web.ingress.hosts }}
-    - {{ $host }}
-    {{- end }}
+    - {{ .Values.web.ingress.host }}
