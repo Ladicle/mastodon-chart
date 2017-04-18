@@ -78,14 +78,16 @@ Production environment for mastodon
   valueFrom:
     secretKeyRef:
       name: {{ template "web.fullname" . }}
-      key: secret-key-base
+      key: secretKeyBase
 - name: OTP_SECRET
   valueFrom:
     secretKeyRef:
-      key: otp-secret
+      name: {{ template "web.fullname" . }}
+      key: otpSecret
 - name: PAPERCLIP_SECRET
   valueFrom:
     secretKeyRef:
       name: {{ template "web.fullname" . }}
-      key: paperclip-secret
+      key: paperclipSecret
 {{- end -}}
+

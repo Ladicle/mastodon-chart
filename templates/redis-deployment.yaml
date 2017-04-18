@@ -49,6 +49,6 @@ spec:
         - name: redis-data
           mountPath: /bitnami/redisg
       volumes:
-      - name: data
+      - name: redis-data
         persistentVolumeClaim:
           claimName: {{ template "redis.fullname" . }}
