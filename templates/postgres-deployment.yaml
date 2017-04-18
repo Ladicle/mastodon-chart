@@ -29,7 +29,7 @@ spec:
         env:
         {{- range $key, $val := .Values.postgres.env }}
         - name: {{ $key | upper }}
-          value: {{ $val }}
+          value: {{ $val | quote }}
         {{- end}}
         - name: POSTGRES_PASSWORD
           valueFrom:

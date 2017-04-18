@@ -1,3 +1,32 @@
+env:
+  federation:
+    localDomain: mastodon.ladicle.com
+    localHttps: true
+  registration: {}
+  # singleUserMode: true
+  # emailDomainBlacklist: example1.com|example2.com
+  # emailDomainWhitelist: example1.com|example2.com
+  defaultLanguage: ja
+  smtp:
+    server: smtp.gmail.com
+    port: 465
+    login: mastodon@ladicle.com
+    address: mastodon@ladicle.com
+  assets: {}
+  # paperclipRootPath: /var/lib/mastodon/public-system
+  # paperclipRootUrl: system
+  # cdnHost: assets.example.com
+  s3: {}
+  # enabled: true
+  # bucket: dummy
+  # awsAccessKeyId: dummy
+  # awsSecretAccessKey: dummy
+  # region: dummy
+  # protocol: http
+  # hostname: "192.168.1.123:9000"
+  # cloudfrontHost: dummy
+  # streamingApiBaseUrl: dummy
+
 web:
   name: web
   image: gargron/mastodon
@@ -14,7 +43,6 @@ web:
     requests:
       memory: 256Mi
       cpu: 100m
-
 streaming:
   name: streaming
   image: gargron/mastodon
@@ -24,7 +52,6 @@ streaming:
     requests:
       memory: 256Mi
       cpu: 100m
-
 sidekiq:
   name: sidekiq
   image: gargron/mastodon
@@ -34,11 +61,10 @@ sidekiq:
     requests:
       memory: 256Mi
       cpu: 100m
-
 redis:
   name: redis
   image: bitnami/redis
-  imageTag: 3.2.8-r2
+  imageTag: "3.2.8-r2"
   imagePullPolicy: IfNotPresent
   # You need to create PV beforehead.
   persistentVolume:
@@ -48,11 +74,10 @@ redis:
     requests:
       memory: 256Mi
       cpu: 100m
-
 postgres:
   name: postgres
   image: postgres
-  imageTag: 9.6.2
+  imageTag: "9.6.2"
   imagePullPolicy: IfNotPresent
   env:
     postgres_user: "postgres"
@@ -69,8 +94,8 @@ postgres:
       cpu: 100m
   metrics:
     enabled: true
-    image: wrouesnel/postgres_exporter
-    imageTag: v0.1.1
+    image: "wrouesnel/postgres_exporter"
+    imageTag: "v0.1.1"
     imagePullPolicy: IfNotPresent
     resources:
       requests:

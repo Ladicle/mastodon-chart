@@ -28,7 +28,7 @@ spec:
           - -p
           - 3000
           - -b
-          - '0.0.0.0'
+          - 0.0.0.0
         env:
 {{ include "productonEnvironment" . | indent 8 }}
         ports:

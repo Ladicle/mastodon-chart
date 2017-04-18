@@ -6,9 +6,6 @@ Production environment for mastodon
   value: "{{ template "redis.fullname" . }}"
 - name: REDIS_PORT
   value: "6379"
-
-# - name: REDIS_DB
-#   value: "0"
 - name: DB_HOST
   value: "{{ template "postgres.fullname" . }}"
 - name: DB_USER
@@ -22,83 +19,61 @@ Production environment for mastodon
   value: "postgres"
 - name: DB_PORT
   value: "5432"
-
-# Federation
 - name: LOCAL_DOMAIN
-  value: "example.com"
+  value: "{{ .Values.env.federation.localDomain }}"
 - name: LOCAL_HTTPS
-  value: "true"
-# - name: WEB_DOMAIN
-#   value: "example.com"
-
-# Registrations
-# - name: SINGLE_USER_MODE
-#   value: "true"
-# - name: EMAIL_DOMAIN_BLACKLIST
-#   value: "example1.com|example2.com"
-# - name: EMAIL_DOMAIN_WHITELIST
-#   value: "example1.com|example2.com"
-
-# Optionally change default language
+  value: "{{ .Values.env.federation.localHttps }}"
+{{- if .Values.env.registration }}
+- name: SINGLE_USER_MODE
+  value: "{{ .Values.env.registration.singleUserMode }}"
+- name: EMAIL_DOMAIN_BLACKLIST
+  value: "{{ .Values.env.registration.emailDomainBlacklist }}"
+- name: EMAIL_DOMAIN_WHITELIST
+  value: "{{ .Values.env.registration.emailDomainWhitelist }}"
+{{- end }}
 - name: DEFAULT_LOCAL
-  value: "ja"
-
-# E-mail configuration
+  value: "{{ .Values.env.defaultLanguage }}"
 - name: SMTP_SERVER
-  value: "smtp.mailgun.org"
+  value: "{{ .Values.env.smtp.server }}"
 - name: SMTP_PORT
-  value: "587"
+  value: "{{ .Values.env.smtp.port }}"
 - name: SMTP_LOGIN
-  value: "dummy"
+  value: "{{ .Values.env.smtp.login }}"
 - name: SMTP_PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ template "streaming.fullname" . }}
       key: smtpPassword
 - name: SMTP_FROM_ADDRESS
-  value: "notifications@example.com"
-# - name: SMTP_DELIVERY_METHOD
-#   value: "smtp"
-# - name: SMTP_AUTH_METHOD
-#   value: "plain"
-# - name: SMTP_OPENSSL_VERIFY_MODE
-#   value: "peer"
-# - name: SMTP_ENABLE_STARTTLS_AUTO
-#   value: "true"
-
-# Optional user upload path and URL (images, avatars). Default is :rails_root/public/system. If you set this variable, you are responsible for making your HTTP server (eg. nginx) serve these files.
-# - name: PAPERCLIP_ROOT_PATH
-#   value: "/var/lib/mastodon/public-system"
-# - name: PAPERCLIP_ROOT_URL
-#   value: "/system"
-# Optional asset host for multi-server setups
-# - name: CDN_HOST
-#   value: "assets.example.com"
-
-# S3 (Minio Config (optional) Please check Minio instance for details)
-# - name: S3_ENABLED
-#   value: "true"
-# - name: S3_BUCKET
-#   value: "dummy"
-# - name: AWS_ACCESS_KEY_ID
-#   value: "dummy"
-# - name: AWS_SECRET_ACCESS_KEY
-#   value: "dummy"
-# - name: S3_REGION
-#   value: "dummy"
-# - name: S3_PROTOCOL
-#   value: "http"
-# - name: S3_HOSTNAME
-#   value: "192.168.1.123:9000"
-# - name: S3_CLOUDFRONT_HOST
-#   value: "dummy"
-# - name: STREAMING_API_BASE_URL
-#   value: "dummy"
-
-# If you need to use pgBouncer, you need to disable prepared statements:
-# - name: PREPARED_STATEMENTS
-#   value: "false"
-
+  value: "{{ .Values.env.smtp.address }}"
+{{- if .Values.env.assets -}}
+- name: PAPERCLIP_ROOT_PATH
+  value: "{{ .Values.env.assets.paperclipRootPath }}"
+- name: PAPERCLIP_ROOT_URL
+  value: "{{ .Values.env.assets.paperclipRootUrl }}"
+- name: CDN_HOST
+  value: "{{ .Values.env.assets.cdnHost }}"
+{{- end }}
+{{- if .Values.env.s3 -}}
+- name: S3_ENABLED
+  value: "{{ .Values.env.s3.enabled }}"
+- name: S3_BUCKET
+  value: "{{ .Values.env.s3.bucket }}"
+- name: AWS_ACCESS_KEY_ID
+  value: "{{ .Values.env.s3.awsAccessKeyId }}"
+- name: AWS_SECRET_ACCESS_KEY
+  value: "{{ .Values.env.s3.awsSecretAccessKey }}"
+- name: S3_REGION
+  value: "{{ .Values.env.s3.region }}"
+- name: S3_PROTOCOL
+  value: "{{ .Values.env.s3.protocol }}"
+- name: S3_HOSTNAME
+  value: "{{ .Values.env.s3.hostname }}"
+- name: S3_CLOUDFRONT_HOST
+  value: "{{ .Values.env.s3.cloudfrontHost }}"
+- name: STREAMING_API_BASE_URL
+  value: "{{ .Values.env.s3.streamingApiBaseUrl }}"
+{{- end }}
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:
