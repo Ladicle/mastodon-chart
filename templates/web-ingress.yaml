@@ -13,14 +13,20 @@ metadata:
   name: {{ template "web.fullname" . }}
 spec:
   rules:
-  - host: mastodon.ladicle.com
+  {{- define "web.serviceName" }}{{ .Release.Name }}-{{ template "web.fullname" }}{{- end -}}
+  {{- $sp := .Values.web.servicePort }}
+  {{- range $host := .Values.web.ingress.hosts }}
+  - host: {{ $host }}
     http:
       paths:
       - path: /
         backend:
-          serviceName: {{ .Release.Name }}-{{ template "web.fullname" }}
-          servicePort: 80
+          serviceName: {{ template "web.serviceName" }}
+          servicePort: {{ $sp }}
+  {{- end }}
   tls:
   - secretName: test-lego-secret
     hosts:
-    - mastodon.ladicle.com
+    {{- range $host := .Values.web.ingress.hosts }}
+    - {{ $host }}
+    {{- end }}

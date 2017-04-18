@@ -1,37 +1,43 @@
 env:
   federation:
-    localDomain: mastodon.ladicle.com
-    localHttps: true
+    localDomain: "mastodon.ladicle.com"
+    localHttps: "true"
   registration: {}
-  # singleUserMode: true
-  # emailDomainBlacklist: example1.com|example2.com
-  # emailDomainWhitelist: example1.com|example2.com
-  defaultLanguage: ja
+  # singleUserMode: "true"
+  # emailDomainBlacklist: "example1.com|example2.com"
+  # emailDomainWhitelist: "example1.com|example2.com"
+  defaultLanguage: "ja"
   smtp:
-    server: smtp.gmail.com
-    port: 465
-    login: mastodon@ladicle.com
-    address: mastodon@ladicle.com
+    server: "smtp.gmail.com"
+    port: "465"
+    login: "mastodon@ladicle.com"
+    address: "mastodon@ladicle.com"
   assets: {}
-  # paperclipRootPath: /var/lib/mastodon/public-system
-  # paperclipRootUrl: system
-  # cdnHost: assets.example.com
+  # paperclipRootPath: "/var/lib/mastodon/public-system"
+  # paperclipRootUrl: "system"
+  # cdnHost: "assets.example.com"
   s3: {}
-  # enabled: true
-  # bucket: dummy
-  # awsAccessKeyId: dummy
-  # awsSecretAccessKey: dummy
-  # region: dummy
-  # protocol: http
+  # enabled: "true"
+  # bucket: "dummy"
+  # awsAccessKeyId: "dummy"
+  # awsSecretAccessKey: "dummy"
+  # region: "dummy"
+  # protocol: "http"
   # hostname: "192.168.1.123:9000"
-  # cloudfrontHost: dummy
-  # streamingApiBaseUrl: dummy
+  # cloudfrontHost: "dummy"
+  # streamingApiBaseUrl: "dummy"
 
 web:
   name: web
   image: gargron/mastodon
   imageTag: v1.1.2
   imagePullPolicy: IfNotPresent
+  servicePort: 80
+  containerPort: 3000
+  ingress:
+    hosts:
+      - mastodon.ladicle.com
+      - mstdn.ladicle.com
   persistentVolume:
     system:
       accessMode: ReadWriteMany
@@ -48,6 +54,8 @@ streaming:
   image: gargron/mastodon
   imageTag: v1.1.2
   imagePullPolicy: IfNotPresent
+  servicePort: 4000
+  containerPort: 4000
   resources:
     requests:
       memory: 256Mi
@@ -66,6 +74,8 @@ redis:
   image: bitnami/redis
   imageTag: "3.2.8-r2"
   imagePullPolicy: IfNotPresent
+  servicePort: 6379
+  containerPort: 6379
   # You need to create PV beforehead.
   persistentVolume:
     accessMode: ReadWriteMany
@@ -79,11 +89,13 @@ postgres:
   image: postgres
   imageTag: "9.6.2"
   imagePullPolicy: IfNotPresent
+  containerPort: 5432
+  servicePort: 5432
   env:
     postgres_user: "postgres"
     pguser: "postgres"
     postgres_db: ""
-    pgdata: /var/lib/postgresql/data/pgdata
+    pgdata: "/var/lib/postgresql/data/pgdata"
   # You need to create PV beforehead.
   persistentVolume:
     accessMode: ReadWriteMany

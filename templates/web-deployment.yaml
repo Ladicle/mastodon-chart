@@ -26,14 +26,14 @@ spec:
           - rails
           - s
           - -p
-          - 3000
+          - {{ .Values.web.containerPort }}
           - -b
           - 0.0.0.0
         env:
 {{ include "productonEnvironment" . | indent 8 }}
         ports:
         - name: web
-          containerPort: 3000
+          containerPort: {{ .Values.web.containerPort }}
         resources:
 {{ toYaml .Values.web.resources | indent 10 }}
         volumeMounts:

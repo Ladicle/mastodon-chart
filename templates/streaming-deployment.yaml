@@ -28,6 +28,6 @@ spec:
 {{ include "productonEnvironment" . | indent 8 }}
         ports:
         - name: streaming
-          containerPort: 4000
+          containerPort: {{ .Values.streaming.containerPort }}
         resources:
 {{ toYaml .Values.streaming.resources | indent 10 }}

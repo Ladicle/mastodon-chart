@@ -5,7 +5,7 @@ Production environment for mastodon
 - name: REDIS_HOST
   value: "{{ template "redis.fullname" . }}"
 - name: REDIS_PORT
-  value: "6379"
+  value: "{{ .Values.redis.servicePort }}"
 - name: DB_HOST
   value: "{{ template "postgres.fullname" . }}"
 - name: DB_USER
@@ -18,7 +18,7 @@ Production environment for mastodon
 - name: DB_NAME
   value: "postgres"
 - name: DB_PORT
-  value: "5432"
+  value: "{{ .Values.postgres.servicePort }}"
 - name: LOCAL_DOMAIN
   value: "{{ .Values.env.federation.localDomain }}"
 - name: LOCAL_HTTPS
@@ -42,7 +42,7 @@ Production environment for mastodon
 - name: SMTP_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ template "streaming.fullname" . }}
+      name: {{ template "web.fullname" . }}
       key: smtpPassword
 - name: SMTP_FROM_ADDRESS
   value: "{{ .Values.env.smtp.address }}"
@@ -77,7 +77,7 @@ Production environment for mastodon
 - name: SECRET_KEY_BASE
   valueFrom:
     secretKeyRef:
-      name: {{ template "streaming.fullname" . }}
+      name: {{ template "web.fullname" . }}
       key: secret-key-base
 - name: OTP_SECRET
   valueFrom:
@@ -86,6 +86,6 @@ Production environment for mastodon
 - name: PAPERCLIP_SECRET
   valueFrom:
     secretKeyRef:
-      name: {{ template "streaming.fullname" . }}
+      name: {{ template "web.fullname" . }}
       key: paperclip-secret
 {{- end -}}

@@ -11,7 +11,7 @@ metadata:
 spec:
   ports:
   - name: postgresql
-    port: 5432
+    port: {{ .Values.postgres.servicePort }}
     targetPort: postgresql
   selector:
     app: {{ template "name" . }}

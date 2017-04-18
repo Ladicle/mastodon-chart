@@ -28,7 +28,7 @@ spec:
               key: redis-password
         ports:
         - name: redis
-          containerPort: 6379
+          containerPort: {{ .Values.redis.containerPort }}
         livenessProbe:
           exec:
             command:

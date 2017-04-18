@@ -11,8 +11,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
-      targetPort: 3000
+      port: {{ .Values.web.servicePort }}
+      targetPort: web
   selector:
     app: {{ template "name" . }}
     component: "{{ .Values.web.name }}"
