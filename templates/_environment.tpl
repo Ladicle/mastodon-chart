@@ -20,9 +20,9 @@ Production environment for mastodon
 - name: DB_PORT
   value: "{{ .Values.postgres.servicePort }}"
 - name: LOCAL_DOMAIN
-  value: "{{ .Values.env.federation.localDomain }}"
+  value: "{{ .Values.web.ingress.host }}"
 - name: LOCAL_HTTPS
-  value: "{{ .Values.env.federation.localHttps }}"
+  value: "false"
 {{- if .Values.env.registration }}
 - name: SINGLE_USER_MODE
   value: "{{ .Values.env.registration.singleUserMode }}"
@@ -39,6 +39,10 @@ Production environment for mastodon
   value: "{{ .Values.env.smtp.port }}"
 - name: SMTP_LOGIN
   value: "{{ .Values.env.smtp.login }}"
+- name: SMTP_OPENSSL_VERIFY_MODE
+  value: "{{ .Values.env.smtp.opensslVerifyMode }}"
+- name: SMTP_DOMAIN
+  value: "{{ .Values.env.smtp.domain }}"
 - name: SMTP_PASSWORD
   valueFrom:
     secretKeyRef:

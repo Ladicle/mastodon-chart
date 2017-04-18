@@ -1,17 +1,16 @@
 env:
-  federation:
-    localDomain: "mastodon.ladicle.com"
-    localHttps: "true"
   registration: {}
   # singleUserMode: "true"
   # emailDomainBlacklist: "example1.com|example2.com"
   # emailDomainWhitelist: "example1.com|example2.com"
   defaultLanguage: "ja"
   smtp:
-    server: "smtp.gmail.com"
-    port: "465"
-    login: "mastodon@ladicle.com"
-    address: "mastodon@ladicle.com"
+    server: "YOUR_SMTP_SERVER"
+    port: "587"
+    login: "YOUR_LOGIN_ACCOUNT"
+    address: "YOUR_MAIL_ADDRESS"
+    opensslVerifyMode: "none"
+    domain: "YOUR_SERVER_DOMAIN"
   assets: {}
   # paperclipRootPath: "/var/lib/mastodon/public-system"
   # paperclipRootUrl: "system"
@@ -35,9 +34,7 @@ web:
   servicePort: 80
   containerPort: 3000
   ingress:
-    hosts:
-      - mastodon.ladicle.com
-      - mstdn.ladicle.com
+    host: SET_YOUR_DOMAIN
   persistentVolume:
     system:
       accessMode: ReadWriteMany
