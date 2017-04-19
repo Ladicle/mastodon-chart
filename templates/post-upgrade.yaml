@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+metadata:
+  name: {{ template "name" . }}-post-upgrade
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": post-upgrade
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: "{{.Release.Name}}"
+      labels:
+        app: {{ template "name" . }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: {{ template "name" . }}-post-upgrade-job
+        image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
+        imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}
+        command: ["/bin/sh"]
+        args:
+          - "-c"
+          - "bundle exec rails db:migrate && bundle exec rails assets:precompile"
+        env:
+{{ include "productonEnvironment" . | indent 8 }}
+        volumeMounts:
+        - name: assets
+          mountPath: /mastodon/public/assets
+      volumes:
+      - name: assets
+        persistentVolumeClaim:
+          claimName: {{ template "web.fullname" . }}-assets
