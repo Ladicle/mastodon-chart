@@ -29,7 +29,7 @@ env:
 web:
   name: web
   image: gargron/mastodon
-  imageTag: v1.1.2
+  imageTag: v1.2
   imagePullPolicy: IfNotPresent
   servicePort: 80
   containerPort: 3000
@@ -49,7 +49,7 @@ web:
 streaming:
   name: streaming
   image: gargron/mastodon
-  imageTag: v1.1.2
+  imageTag: v1.2
   imagePullPolicy: IfNotPresent
   servicePort: 4000
   containerPort: 4000
@@ -60,7 +60,7 @@ streaming:
 sidekiq:
   name: sidekiq
   image: gargron/mastodon
-  imageTag: v1.1.2
+  imageTag: v1.2
   imagePullPolicy: IfNotPresent
   resources:
     requests:
@@ -68,8 +68,8 @@ sidekiq:
       cpu: 100m
 redis:
   name: redis
-  image: bitnami/redis
-  imageTag: "3.2.8-r2"
+  image: redis
+  imageTag: 3-alpine
   imagePullPolicy: IfNotPresent
   servicePort: 6379
   containerPort: 6379
