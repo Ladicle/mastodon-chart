@@ -9,6 +9,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
