@@ -25,6 +25,6 @@ spec:
           serviceName: {{ .Release.Name }}-{{ .Chart.Name }}-{{ .Values.streaming.name }}
           servicePort: {{ .Values.streaming.servicePort }}
   tls:
-  - secretName: test-lego-secret
+  - secretName: {{ template "name" . }}-lego-secret
     hosts:
     - {{ .Values.web.ingress.host }}
