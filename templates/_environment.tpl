@@ -22,7 +22,7 @@ Production environment for mastodon
 - name: LOCAL_DOMAIN
   value: "{{ .Values.web.ingress.host }}"
 - name: LOCAL_HTTPS
-  value: "false"
+  value: "true"
 - name: SINGLE_USER_MODE
   value: "{{ .Values.env.singleUserMode }}"
 {{- if .Values.env.registration }}
