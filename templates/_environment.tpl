@@ -23,9 +23,9 @@ Production environment for mastodon
   value: "{{ .Values.web.ingress.host }}"
 - name: LOCAL_HTTPS
   value: "false"
-{{- if .Values.env.registration }}
 - name: SINGLE_USER_MODE
-  value: "{{ .Values.env.registration.singleUserMode }}"
+  value: "{{ .Values.env.singleUserMode }}"
+{{- if .Values.env.registration }}
 - name: EMAIL_DOMAIN_BLACKLIST
   value: "{{ .Values.env.registration.emailDomainBlacklist }}"
 - name: EMAIL_DOMAIN_WHITELIST

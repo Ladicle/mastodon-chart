@@ -1,6 +1,6 @@
 env:
+  singleUserMode: "true"
   registration: {}
-  # singleUserMode: "true"
   # emailDomainBlacklist: "example1.com|example2.com"
   # emailDomainWhitelist: "example1.com|example2.com"
   defaultLanguage: "ja"
