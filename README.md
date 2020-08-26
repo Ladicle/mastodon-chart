@@ -7,5 +7,5 @@ Updated to support the latest version of the Mastodon image on Dockerhub, and fo
 ## How to Install?
 
 ``` shell
-helm upgrade --timeout 1200s --install -f secrets.yaml mastodon .
+helm upgrade --install -f secrets.yaml mastodon .
 ```
