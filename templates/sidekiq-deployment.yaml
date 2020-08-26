@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "sidekiq.fullname" . }}
@@ -10,6 +10,9 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}
   strategy:
     type: RollingUpdate
   template:
@@ -27,6 +30,8 @@ spec:
           - bundle
           - exec
           - sidekiq
+          - -c
+          - "3"
           - -q
           - default
           - -q
@@ -43,6 +48,6 @@ spec:
         - name: assets
           mountPath: /mastodon/public/assets
       volumes:
-      - name: system
+      - name: assets
         persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-system
+          claimName: {{ template "web.fullname" . }}-assets

@@ -1,4 +1,4 @@
-apiVersion: batch/v2alpha1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: {{ template "name" . }}-daily-cron
@@ -17,26 +17,29 @@ spec:
         component: {{ template "name" . }}-daily-cron
         release: {{ .Release.Name }}
     spec:
-      containers:
-      - name: {{ template "name" . }}-daily-cron
-        image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
-        imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}
-        command:
-          - bundle
-          - exec
-          - rake
-          - mastodon:daily
-        env:
-{{ include "productonEnvironment" . | indent 8 }}
-        volumeMounts:
-        - name: assets
-          mountPath: /mastodon/public/assets
-        - name: system
-          mountPath: /mastodon/public/system
-      volumes:
-      - name: system
-        persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-system
-      - name: assets
-        persistentVolumeClaim:
-          claimName: {{ template "web.fullname" . }}-assets
+      template:
+        spec:
+          containers:
+          - name: {{ template "name" . }}-daily-cron
+            image: "{{ .Values.web.image }}:{{ .Values.web.imageTag }}"
+            imagePullPolicy: {{ .Values.web.imagePullPolicy | quote }}
+            command:
+            - bundle
+            - exec
+            - rake
+            - mastodon:daily
+            env:
+{{ include "productonEnvironment" . | indent 12 }}
+            volumeMounts:
+            - name: assets
+              mountPath: /mastodon/public/assets
+            - name: system
+              mountPath: /mastodon/public/system
+          volumes:
+          - name: system
+            persistentVolumeClaim:
+              claimName: {{ template "web.fullname" . }}-system
+          - name: assets
+            persistentVolumeClaim:
+              claimName: {{ template "web.fullname" . }}-assets
+          restartPolicy: OnFailure
