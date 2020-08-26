@@ -31,7 +31,7 @@ spec:
           - exec
           - sidekiq
           - -c
-          - "3"
+          - "{{ .Values.sidekiq.parallelism }}"
           - -q
           - default
           - -q

@@ -33,6 +33,8 @@ web:
   imagePullPolicy: IfNotPresent
   servicePort: 80
   containerPort: 3000
+  concurrency: 5
+  maxThreads: 5
   ingress:
     host: SET_YOUR_DOMAIN
   persistentVolume:
@@ -53,6 +55,7 @@ streaming:
   imagePullPolicy: IfNotPresent
   servicePort: 4000
   containerPort: 4000
+  clusterSize: 5
   resources:
     requests:
       memory: 256Mi
@@ -62,6 +65,7 @@ sidekiq:
   image: gargron/mastodon
   imageTag: v1.2
   imagePullPolicy: IfNotPresent
+  parallelism: 3
   resources:
     requests:
       memory: 256Mi

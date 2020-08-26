@@ -20,11 +20,11 @@ Production environment for mastodon
 - name: SAFETY_ASSURED
   value: "1"
 - name: WEB_CONCURRENCY
-  value: "1"
+  value: "{{ .Values.web.concurrency }}"
 - name: MAX_THREADS
-  value: "5"
+  value: "{{ .Values.web.maxThreads }}"
 - name: STREAMING_CLUSTER_NUM
-  value: "1"
+  value: "{{ .Values.streaming.clusterSize }}"
 - name: DB_PORT
   value: "{{ .Values.postgres.servicePort }}"
 - name: LOCAL_DOMAIN
