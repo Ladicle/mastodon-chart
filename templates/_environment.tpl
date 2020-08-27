@@ -19,6 +19,8 @@ Production environment for mastodon
   value: "postgres"
 - name: SAFETY_ASSURED
   value: "1"
+- name: RAILS_SERVE_STATIC_FILES
+  value: "true"
 - name: WEB_CONCURRENCY
   value: "{{ .Values.web.concurrency }}"
 - name: MAX_THREADS
