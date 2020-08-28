@@ -29,7 +29,7 @@ env:
 web:
   name: web
   image: tootsuite/mastodon
-  imageTag: v1.2
+  imageTag: v3.2.0
   imagePullPolicy: IfNotPresent
   servicePort: 80
   containerPort: 3000
@@ -51,7 +51,7 @@ web:
 streaming:
   name: streaming
   image: tootsuite/mastodon
-  imageTag: v1.2
+  imageTag: v3.2.0
   imagePullPolicy: IfNotPresent
   servicePort: 4000
   containerPort: 4000
@@ -63,7 +63,7 @@ streaming:
 sidekiq:
   name: sidekiq
   image: tootsuite/mastodon
-  imageTag: v1.2
+  imageTag: v3.2.0
   imagePullPolicy: IfNotPresent
   parallelism: 3
   resources:
@@ -73,7 +73,7 @@ sidekiq:
 redis:
   name: redis
   image: redis
-  imageTag: 3-alpine
+  imageTag: 6-alpine
   imagePullPolicy: IfNotPresent
   servicePort: 6379
   containerPort: 6379
