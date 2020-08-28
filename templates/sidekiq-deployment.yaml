@@ -47,7 +47,12 @@ spec:
         volumeMounts:
         - name: assets
           mountPath: /mastodon/public/assets
+        - name: system
+          mountPath: /mastodon/public/system
       volumes:
       - name: assets
         persistentVolumeClaim:
           claimName: {{ template "web.fullname" . }}-assets
+      - name: system
+        persistentVolumeClaim:
+          claimName: {{ template "web.fullname" . }}-system
