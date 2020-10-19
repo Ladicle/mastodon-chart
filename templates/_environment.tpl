@@ -17,12 +17,22 @@ Production environment for mastodon
       key: postgres-password
 - name: DB_NAME
   value: "postgres"
+- name: SAFETY_ASSURED
+  value: "1"
+- name: RAILS_SERVE_STATIC_FILES
+  value: "true"
+- name: WEB_CONCURRENCY
+  value: "{{ .Values.web.concurrency }}"
+- name: MAX_THREADS
+  value: "{{ .Values.web.maxThreads }}"
+- name: STREAMING_CLUSTER_NUM
+  value: "{{ .Values.streaming.clusterSize }}"
 - name: DB_PORT
   value: "{{ .Values.postgres.servicePort }}"
 - name: LOCAL_DOMAIN
   value: "{{ .Values.web.ingress.host }}"
 - name: LOCAL_HTTPS
-  value: "true"
+  value: "false"
 - name: SINGLE_USER_MODE
   value: "{{ .Values.env.singleUserMode }}"
 {{- if .Values.env.registration }}

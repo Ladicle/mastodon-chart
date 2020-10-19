@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "sidekiq.fullname" . }}
@@ -10,6 +10,9 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name" . }}
   strategy:
     type: RollingUpdate
   template:
@@ -27,6 +30,8 @@ spec:
           - bundle
           - exec
           - sidekiq
+          - -c
+          - "{{ .Values.sidekiq.parallelism }}"
           - -q
           - default
           - -q
@@ -42,7 +47,12 @@ spec:
         volumeMounts:
         - name: assets
           mountPath: /mastodon/public/assets
+        - name: system
+          mountPath: /mastodon/public/system
       volumes:
+      - name: assets
+        persistentVolumeClaim:
+          claimName: {{ template "web.fullname" . }}-assets
       - name: system
         persistentVolumeClaim:
           claimName: {{ template "web.fullname" . }}-system

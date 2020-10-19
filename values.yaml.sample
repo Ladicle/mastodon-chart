@@ -28,11 +28,13 @@ env:
 
 web:
   name: web
-  image: gargron/mastodon
-  imageTag: v1.2
+  image: tootsuite/mastodon
+  imageTag: v3.2.1
   imagePullPolicy: IfNotPresent
   servicePort: 80
   containerPort: 3000
+  concurrency: 5
+  maxThreads: 5
   ingress:
     host: SET_YOUR_DOMAIN
   persistentVolume:
@@ -48,20 +50,22 @@ web:
       cpu: 100m
 streaming:
   name: streaming
-  image: gargron/mastodon
-  imageTag: v1.2
+  image: tootsuite/mastodon
+  imageTag: v3.2.1
   imagePullPolicy: IfNotPresent
   servicePort: 4000
   containerPort: 4000
+  clusterSize: 5
   resources:
     requests:
       memory: 256Mi
       cpu: 100m
 sidekiq:
   name: sidekiq
-  image: gargron/mastodon
-  imageTag: v1.2
+  image: tootsuite/mastodon
+  imageTag: v3.2.1
   imagePullPolicy: IfNotPresent
+  parallelism: 3
   resources:
     requests:
       memory: 256Mi
@@ -69,7 +73,7 @@ sidekiq:
 redis:
   name: redis
   image: redis
-  imageTag: 3-alpine
+  imageTag: 6-alpine
   imagePullPolicy: IfNotPresent
   servicePort: 6379
   containerPort: 6379
